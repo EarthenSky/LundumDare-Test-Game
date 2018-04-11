@@ -4,7 +4,7 @@ local Char = {}
 -- 0 is no movement, 1 is up, 2 is right, 3 is down, 4 is left.
 local moveType = 0
 
-local SPEED = 120
+local SPEED = 160
 
 -- Keyboard Varibles.
 local startButtonPress = false
@@ -19,21 +19,27 @@ local is_animation_playing = false
 
 function collision_check()
     -- Screen Bounds Collision
-    if objects.player.body:getX() < 0 then
-        objects.player.body:setX(0)
-    elseif objects.player.body:getX() > screenSize.x - 32 then
-        objects.player.body:setX(screenSize.x - 32)
+    if objects.player.body:getX() < 16 then
+        objects.player.body:setX(16)
+    elseif objects.player.body:getX() > screenSize.x - 16 then
+        objects.player.body:setX(screenSize.x - 16)
     end
 
     -- Screen Bounds Collision
-    if objects.player.body:getY() < 0 then
-        objects.player.body:setY(0)
-    elseif objects.player.body:getY() > screenSize.y - 32 then
-        objects.player.body:setY(screenSize.y - 32)
+    if objects.player.body:getY() < 16 then
+        objects.player.body:setY(16)
+    elseif objects.player.body:getY() > screenSize.y - 16 then
+        objects.player.body:setY(screenSize.y - 16)
     end
 end
 
 function Char.load()
+    -- Create the player collision object.
+    objects.player = {}
+    objects.player.body = love.physics.newBody(world, 256/2, 256/2, "dynamic")
+    objects.player.shape = love.physics.newRectangleShape(32, 32)
+    objects.player.fixture = love.physics.newFixture(objects.player.body, objects.player.shape)
+    objects.player.body:setFixedRotation(true)
 end
 
 function Char.draw()
@@ -51,6 +57,7 @@ function Char.draw()
     end
 
     -- Draw the character with the quad.
+    love.graphics.setColor(255, 255, 255, 255)
     drawQuad = love.graphics.newQuad(quadDrawIndex.x * 32, quadDrawIndex.y * 32, 32, 32, charSpriteSheet:getWidth(), charSpriteSheet:getHeight())
     love.graphics.draw(charSpriteSheet, drawQuad, objects.player.body:getX()-16, objects.player.body:getY()-16)
 end
@@ -95,6 +102,11 @@ function Char.update(dt)
     -- If the frame counter hits 15 frames, change to the next frame.
     if is_animation_playing == true then
         quadDrawIndex.x = animation_value[(math.floor(frame_counter / 8) % 4) + 1]
+    end
+
+    -- Move this objects if on the conveyor belt.
+    if objects.player.body:getY() > 512 and objects.player.body:getY() < 640 - 32 then
+        objects.player.body:setX(objects.player.body:getX() + 30 * dt)
     end
 
     -- Check for player and screen bounds collision.
