@@ -106,7 +106,13 @@ function Char.update(dt)
 
     -- Move this objects if on the conveyor belt.
     if objects.player.body:getY() > 512 and objects.player.body:getY() < 640 - 32 then
-        objects.player.body:setX(objects.player.body:getX() + 30 * dt)
+        objects.player.body:setX(objects.player.body:getX() + 50 * dt)
+    elseif objects.player.body:getX() > 16 and objects.player.body:getX() < 128 - 16 and objects.player.body:getY() < 128 + 16 then
+        objects.player.body:setY(objects.player.body:getY() - 50 * dt)
+    elseif objects.player.body:getX() > 16 + 256 and objects.player.body:getX() < 128 - 16 + 256 and objects.player.body:getY() < 128 + 16 then
+        objects.player.body:setY(objects.player.body:getY() - 50 * dt)
+    elseif objects.player.body:getX() > 16 + 512 and objects.player.body:getX() < 128 - 16 + 512 and objects.player.body:getY() < 128 + 16 then
+        objects.player.body:setY(objects.player.body:getY() - 50 * dt)
     end
 
     -- Check for player and screen bounds collision.

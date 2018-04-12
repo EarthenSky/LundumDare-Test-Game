@@ -38,14 +38,21 @@ end
 
 -- Update this sprite.
 function Food:update(dt)
-    -- move the sprite if on the conveyor belt
+    -- Move the sprite if on the conveyor belt.
     if self.m_food.body:getY() > 512 and self.m_food.body:getY() < 640 - 32 then
-        self.m_food.body:setX(self.m_food.body:getX() + 30 * dt)
+        self.m_food.body:setX(self.m_food.body:getX() + 50 * dt)
+    elseif self.m_food.body:getX() > 16 and self.m_food.body:getX() < 128 - 16 and self.m_food.body:getY() < 128 + 16 then
+        self.m_food.body:setY(self.m_food.body:getY() - 50 * dt)
+    elseif self.m_food.body:getX() > 16 + 256 and self.m_food.body:getX() < 128 - 16 + 256 and self.m_food.body:getY() < 128 + 16 then
+        self.m_food.body:setY(self.m_food.body:getY() - 50 * dt)
+    elseif self.m_food.body:getX() > 16 + 512 and self.m_food.body:getX() < 128 - 16 + 512 and self.m_food.body:getY() < 128 + 16 then
+        self.m_food.body:setY(self.m_food.body:getY() - 50 * dt)
     end
 
     -- Destroy object.
-    if self.m_food.body:getX() < 0 or self.m_food.body:getX() > 500 then
+    if self.m_food.body:getX() < -64 or self.m_food.body:getX() > 700 then
         self.m_destroy = true
+        self.m_food.body:destroy()
         return
     end
 

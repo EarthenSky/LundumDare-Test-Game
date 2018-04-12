@@ -26,6 +26,7 @@ function love.load()
     char = require("char")
     scene = require("scene")
     foodManager = require("foodManager")
+    ui = require("ui")
 
     -- Init goes here.
     char.load()
@@ -35,6 +36,7 @@ end
 
 -- The draw function.
 function love.draw()
+    love.graphics.setColor(255, 255, 255, 255)
     love.graphics.polygon("line", objects.player.body:getWorldPoints(objects.player.shape:getPoints()))
     --love.graphics.polygon("line", objects.wallLeft.body:getWorldPoints(objects.wallLeft.shape:getPoints()))
     --love.graphics.polygon("line", objects.wallRight.body:getWorldPoints(objects.wallRight.shape:getPoints()))
@@ -42,15 +44,13 @@ function love.draw()
     scene.draw()
     char.draw()
     foodManager.draw()
+    ui.draw()
 end
 
 -- The update function.
 function love.update(dt)
-
-
-    --objects.player.body:setAwake(true)
-
+    scene.update(dt)
     char.update(dt)
-    world:update(dt)
     foodManager.update(dt)
+    world:update(dt)
 end

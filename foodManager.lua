@@ -1,13 +1,15 @@
 local FoodManager = {}
 
 local food = require("food")
-local foodList = { food:new( {x=40, y=525}, 1 ) }
+local foodList = {}
 
-local currentId = 2
+local currentId = 1
+
+local curentTick = 0
 
 -- Create a food object with a certain value at the new id.
 function FoodManager.addFood(value)
-    foodList[currentId] = food:new( {x=0, y=525}, value )
+    foodList[currentId] = food:new( {x=-16, y=560}, value )
     currentId = currentId + 1
 end
 
@@ -18,9 +20,9 @@ end]]
 
 -- Draws all food objects.
 function FoodManager.draw()
-    for i,v in ipairs(foodList) do
-        foodList[i]:draw()
-        love.graphics.polygon("line", foodList[i].m_food.body:getWorldPoints(foodList[i].m_food.shape:getPoints()))
+    for k,v in pairs(foodList) do
+        foodList[k]:draw()
+        love.graphics.polygon("line", foodList[k].m_food.body:getWorldPoints(foodList[k].m_food.shape:getPoints()))
     end
 end
 
@@ -29,16 +31,23 @@ function FoodManager.update(dt)
     -- Garbage list, holds variables to destroy.
     garbList = {}
 
-    for i,v in ipairs(foodList) do
-        foodList[i]:update(dt)
-        if foodList[i].m_destroy == true then
-            garbList[i] = i
+    for k,v in pairs(foodList) do
+        foodList[k]:update(dt)
+        if foodList[k].m_destroy == true then
+            garbList[k] = true
         end
     end
 
     -- Empty the garbage list.
-    for i,v in ipairs(garbList) do
-        foodList[i] = nul
+    for k,v in pairs(garbList) do
+        foodList[k] = nul
+    end
+
+    -- Spawn a food every 120 frames.
+    curentTick = curentTick + 1
+    if curentTick > 120 then
+        curentTick = 0
+        FoodManager.addFood(love.math.random(0, 3))
     end
 end
 
