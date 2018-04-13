@@ -52,13 +52,13 @@ function Food:update(dt)
     -- Destroy object.
     if self.m_food.body:getX() < -64 or self.m_food.body:getX() > 700 then
         self.m_destroy = true
-        self.m_food.body:destroy()
         return
     end
 
     -- Screen Bounds Collision
-    if self.m_food.body:getY() < 16 then
-        self.m_food.body:setY(16)
+    if self.m_food.body:getY() < -32 then
+        self.m_destroy = true
+        return
     elseif self.m_food.body:getY() > screenSize.y - 16 then
         self.m_food.body:setY(screenSize.y - 16)
     end
