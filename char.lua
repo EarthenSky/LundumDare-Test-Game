@@ -17,6 +17,18 @@ local frame_counter = 0
 local animation_value = {0, 1, 2, 1}
 local is_animation_playing = false
 
+local space_key = false
+
+local food_is_picked_up = false
+Char.grabbed_objects = {}
+
+-- Find distance between two points.
+function distance ( x1, y1, x2, y2 )
+  local dx = x1 - x2
+  local dy = y1 - y2
+  return math.sqrt ( dx * dx + dy * dy )
+end
+
 function collision_check()
     -- Screen Bounds Collision
     if objects.player.body:getX() < 16 then
@@ -70,6 +82,15 @@ function Char.update(dt)
         is_animation_playing = true
         objects.player.body:setY(objects.player.body:getY() - SPEED * dt)
 
+        if food_is_picked_up == true then
+            -- Loop food.  Drop these food.
+            for k, val in pairs(Char.grabbed_objects) do
+                if val == true then
+                    foodManager.foodList[k].m_food.body:setY(foodManager.foodList[k].m_food.body:getY() - SPEED * dt)
+                end
+            end
+        end
+
     elseif love.keyboard.isDown( "a" ) then
         moveType = 4
         startButtonPress = true
@@ -95,6 +116,33 @@ function Char.update(dt)
         frame_counter = 0
         quadDrawIndex.x = 1
 
+    end
+
+    -- If player is picking up cubes.
+    if love.keyboard.isDown( "space" ) then
+        if space_key == false then
+            space_key = true
+
+            food_is_picked_up = not food_is_picked_up
+
+            if food_is_picked_up == true then
+                -- Loop food.  Drop these food.
+                for k, val in pairs(foodManager.foodList) do
+                    if distance( val.m_food.body:getX(), val.m_food.body:getY(), objects.player.body:getX(), objects.player.body:getY() ) < 64 then
+                        Char.grabbed_objects[k] = false
+                    end
+                end
+            else
+                -- Loop food.  Add these food.
+                for k, val in pairs(foodManager.foodList) do
+                    if distance( val.m_food.body:getX(), val.m_food.body:getY(), objects.player.body:getX(), objects.player.body:getY() ) < 64 then
+                        Char.grabbed_objects[k] = true
+                    end
+                end
+            end
+        end
+    elseif love.keyboard.isDown( "space" ) == false then
+        space_key = false
     end
 
     frame_counter = frame_counter + 1

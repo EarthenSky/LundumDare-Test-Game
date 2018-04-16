@@ -40,6 +40,7 @@ function FoodManager.update(dt)
 
     -- Empty the garbage list.
     for k,v in pairs(garbList) do
+        char.grabbed_objects[k] = false
         FoodManager.foodList[k].m_food.body:destroy()
         FoodManager.foodList[k] = nul
     end

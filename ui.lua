@@ -4,7 +4,7 @@ UI.score = 0
 
 function UI.draw()
     scoreDraw = UI.score
-    
+
     -- Calculate the amount of zeros
     while string.len(scoreDraw) < 4 do
         scoreDraw =  "0" .. scoreDraw

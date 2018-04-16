@@ -32,8 +32,8 @@ function Scene.draw()
     foodStations.draw()
 end
 
-function Scene.update()
-    foodStations.update()
+function Scene.update(dt)
+    foodStations.update(dt)
 end
 
 return Scene
