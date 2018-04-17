@@ -8,7 +8,7 @@ local foodStationsId = {-1, -1, -1}
 local foodStationsTimer = {0, 0, 0}
 
 local curentTick = 0
-local station_time = 24  -- 24s
+local station_time = 30  -- 24s
 
 function FoodStations.draw()
     -- Draw the food stations belts
@@ -59,7 +59,7 @@ function FoodStations.update(dt)
         end
 
         -- Case: food station has been active too long.
-        if foodStationsTimer[i] > 24 then
+        if foodStationsTimer[i] > station_time then
             -- Lose 10 points.
             ui.score = ui.score - 10
             if ui.score < 0 then

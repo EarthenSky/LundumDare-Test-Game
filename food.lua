@@ -36,9 +36,13 @@ function Food:draw()
     end
 end
 
+Food.on_belt = false
+
 -- Update this sprite.
 function Food:update(dt)
-    -- Move the sprite if on the conveyor belt.
+
+    -- Move the sprite if on the conveyor belt.  Also assign a value to the flag.
+    self.on_belt = true
     if self.m_food.body:getY() > 512 and self.m_food.body:getY() < 640 - 32 then
         self.m_food.body:setX(self.m_food.body:getX() + 50 * dt)
     elseif self.m_food.body:getX() > 16 and self.m_food.body:getX() < 128 - 16 and self.m_food.body:getY() < 128 + 16 then
@@ -47,6 +51,8 @@ function Food:update(dt)
         self.m_food.body:setY(self.m_food.body:getY() - 50 * dt)
     elseif self.m_food.body:getX() > 16 + 512 and self.m_food.body:getX() < 128 - 16 + 512 and self.m_food.body:getY() < 128 + 16 then
         self.m_food.body:setY(self.m_food.body:getY() - 50 * dt)
+    else
+        self.on_belt = false
     end
 
     -- Destroy object.

@@ -45,9 +45,9 @@ function FoodManager.update(dt)
         FoodManager.foodList[k] = nul
     end
 
-    -- Spawn a food every 120 frames.
+    -- Spawn a food every 60 frames.
     curentTick = curentTick + 1
-    if curentTick > 120 then
+    if curentTick > 60 then
         curentTick = 0
         FoodManager.addFood(love.math.random(0, 3))
     end
